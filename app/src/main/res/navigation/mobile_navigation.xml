@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_todo">
+
+    <fragment
+        android:id="@+id/navigation_todo"
+        android:name="com.ghotsoftware.do_something.ui.todo.ToDoFragment"
+        android:label="@string/title_todo"
+        tools:layout="@layout/fragment_todo" />
+
+    <fragment
+        android:id="@+id/navigation_bedone"
+        android:name="com.ghotsoftware.do_something.ui.bedone.BeDoneFragment"
+        android:label="@string/title_bedone"
+        tools:layout="@layout/fragment_bedone" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.ghotsoftware.do_something.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
