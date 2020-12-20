@@ -16,10 +16,12 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -60,10 +62,19 @@ public class ToDoFragment extends Fragment {
 
         toDoListView = root.findViewById(R.id.ToDoListView);
 
-        todoArrayList = LoadData();
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED) {
 
-        adapter = new CustomAdapter(getContext(), todoArrayList, false, this);
-        toDoListView.setAdapter(adapter);
+                todoArrayList = LoadData();
+
+                adapter = new CustomAdapter(getContext(), todoArrayList, false, this);
+                //toDoListView.setAdapter(adapter);
+        } else{
+            requestPermissions(
+                    new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE },
+                    44);
+        }
+
 
         addStuffBtn = root.findViewById(R.id.floatingActionButton);
         addStuffBtn.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +86,23 @@ public class ToDoFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == 44){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                todoArrayList = LoadData();
+
+                //adapter = new CustomAdapter(getContext(), todoArrayList, false, this);
+                //toDoListView.setAdapter(adapter);
+            }else{
+                Toast.makeText(getContext(), "Dosya okunamadı.", Toast.LENGTH_LONG).show();
+                getActivity().finish();
+            }
+        }
     }
 
     protected Dialog onCreateDialog() {
